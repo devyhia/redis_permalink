@@ -7,7 +7,7 @@ module RedisPermalink
 
 	module ClassMethods
 	  def redis_permalink_name
-	    @redis_permalink_name
+	    self[@redis_permalink_name]
 	  end
 
 	  def redis_permalink_name=(v)
