@@ -7,9 +7,9 @@ Gem::Specification.new do |spec|
   spec.name          = "redis_permalink"
   spec.version       = RedisPermalink::VERSION
   spec.authors       = ["Yehia Abo El-Nga"]
-  spec.email         = ["yehia@devrok.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.email         = ["yehia@ewsalo.com"]
+  spec.description   = %q{A permalink extension to ActiveRecord backed with Redis caching}
+  spec.summary       = %q{A permalink extension to ActiveRecord backed with Redis caching}
   spec.homepage      = ""
   spec.license       = "MIT"
 
