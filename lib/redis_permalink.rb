@@ -7,7 +7,7 @@ module RedisPermalink
 
 	module ClassMethods
 	  def redis_permalink_name
-	    self[@redis_permalink_name]
+	    @redis_permalink_name
 	  end
 
 	  def redis_permalink_name=(v)
@@ -27,8 +27,12 @@ module RedisPermalink
 	  	self.redis_permalink_cache = cache
 
 	    class_eval do
+	    	def redis_permalink_field
+	    		self[self.class.redis_permalink_name]
+	    	end
+
 	    	def generate_permalink
-		      list = self.redis_permalink_name.split(/ /)
+		      list = self.redis_permalink_field.split(/ /)
 		      
 		      refined = []
 		      list.size.times.each do |i|
@@ -51,20 +55,20 @@ module RedisPermalink
 		    end
 
 		    def self.via_permalink(perma)
-		      if self.redis_permalink_cache
+		      if self.class.redis_permalink_cache
 		        key = "#{self.name.underscore}:#{perma}"
-		        id = self.redis_permalink_cache.get(key)
+		        id = self.class.redis_permalink_cache.get(key)
 		        return self.find(id) if id
 		      end
 		      
 		      # If not cached
 		      obj = self.find_by_permalink(perma)
-		      self.redis_permalink_cache.set(key, obj.id) if self.redis_permalink_cache
+		      self.class.redis_permalink_cache.set(key, obj.id) if self.class.redis_permalink_cache
 		      return obj
 		    end
 
 		    before_create { self['permalink'] = self.generate_permalink }
-		    after_destroy { self.redis_permalink_cache.del(self['permalink']) if self.redis_permalink_cache }
+		    after_destroy { self.class.redis_permalink_cache.del(self['permalink']) if self.class.redis_permalink_cache }
 	    end
 	  end
 	end
