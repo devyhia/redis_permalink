@@ -55,15 +55,15 @@ module RedisPermalink
 		    end
 
 		    def self.via_permalink(perma)
-		      if self.class.redis_permalink_cache
+		      if self.redis_permalink_cache
 		        key = "#{self.name.underscore}:#{perma}"
-		        id = self.class.redis_permalink_cache.get(key)
+		        id = self.redis_permalink_cache.get(key)
 		        return self.find(id) if id
 		      end
 		      
 		      # If not cached
 		      obj = self.find_by_permalink(perma)
-		      self.class.redis_permalink_cache.set(key, obj.id) if self.class.redis_permalink_cache
+		      self.redis_permalink_cache.set(key, obj.id) if self.redis_permalink_cache
 		      return obj
 		    end
 
